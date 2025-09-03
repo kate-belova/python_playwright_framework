@@ -7,21 +7,34 @@ class Input(Base):
     """Методы для работы с полями ввода"""
 
     def fill(self, text: str, secure: bool = False, delay: int | float = None):
-        """Метод для ввода текста"""
+        """Заполнение поля ввода
 
-        text = text if not secure else '***'
+        :param text: текст для ввода
+        :param secure: если True, то в allure будет отображаться ***
+        :param delay: если указан, ввод будет посимвольный с задержкой
+        """
 
-        with allure.step(f'Ввод текста {text} в поле {self.allure_name}'):
+        display_text = text if not secure else "***"
+
+        with allure.step(
+            f'Ввод текста "{display_text}" в поле "{self.allure_name}"'
+        ):
             if delay:
-                self._element.type(text=text, delay=delay)
+                self._element.type(text, delay=delay)
             else:
-                self._element.fill(text=text)
+                self._element.fill(text)
 
     def clear(self):
         """Очистка поля ввода"""
 
         with allure.step(f'Очистка поля "{self.allure_name}"'):
             self._element.clear()
+
+    def press_enter(self):
+        """Нажатие Enter в поле"""
+
+        with allure.step(f'Нажатие Enter в поле "{self.allure_name}"'):
+            self._element.press("Enter")
 
     def get_input_value(self, timeout_msec: float = None) -> str:
         """Получение текстового значения поля ввода
