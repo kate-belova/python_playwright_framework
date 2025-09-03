@@ -5,3 +5,4 @@ from dotenv import load_dotenv
 load_dotenv()
 BASE_URL = os.getenv('BASE_URL')
 CART_ENDPOINT = '/cart.html'
+PRODUCT_CARD_ENDPOINT = 'prod.html?idp_='
