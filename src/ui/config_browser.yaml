@@ -1,4 +1,5 @@
 browserType: chromium
+useSystemBrowser: false
 launch:
   channel: chrome
   headless: false
@@ -10,3 +11,5 @@ context:
   locale: en-US
   extra_http_headers:
     Accept-Language: "en-US,en;q=0.9"
+
+
