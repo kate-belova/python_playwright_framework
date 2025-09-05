@@ -16,6 +16,7 @@ class Base(ABC):
         role=None,
         value: str = None,
         allure_name: str = None,
+        **kwargs,
     ):
         self.page = page
         self.strategy = strategy
@@ -26,7 +27,7 @@ class Base(ABC):
 
         if strategy is None or strategy == 'locator':
             if isinstance(selector, str):
-                self._element = self.page.locator(self.selector)
+                self._element = self.page.locator(self.selector, **kwargs)
                 return
             else:
                 raise ValueError('Не указан аргумент selector')
@@ -36,7 +37,7 @@ class Base(ABC):
             'by_label',
             'by_title',
             'by_placeholder',
-            'by_alt_text',
+            'by_text' 'by_alt_text',
             'by_test_id',
         ]:
             if not isinstance(value, str):
