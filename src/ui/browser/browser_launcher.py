@@ -20,7 +20,6 @@ class BrowserLauncher:
 
         param: config_path: путь до конфигурационного файла
         """
-
         try:
             with open(config_path) as config_file:
                 self.config = yaml.safe_load(config_file)
@@ -28,12 +27,13 @@ class BrowserLauncher:
             raise RuntimeError(f'Ошибка загрузки конфигурационного файла {e}')
 
     def _launch(self):
-        """Подготовка локального браузера с заданной в .yaml-файле
-        конфигурацией
-        """
-
+        """Подготовка браузера с заданной в .yaml-файле конфигурацией"""
         browser_type_name = self.config.get('browserType')
-        launch_options = self.config.get('launch')
+        launch_options = self.config.get('launch', {}).copy()
+        use_system_browser = self.config.get('useSystemBrowser', False)
+
+        if not use_system_browser:
+            launch_options.pop('channel', None)
 
         if browser_type_name == 'chromium':
             browser_type = self.playwright.chromium
@@ -49,9 +49,7 @@ class BrowserLauncher:
 
         :param kwargs: дополнительные параметры для конфигурации браузера
         """
-
         context_params = {'ignore_https_errors': True}
-
         if self.config.get('context'):
             context_params.update(self.config['context'])
 
